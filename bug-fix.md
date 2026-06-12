@@ -123,3 +123,86 @@ Sections: purpose/scope · architecture diagram (defect → service → index �
 - `Code-Indexing Version4.json` — endpoint contracts
 - `.code_index/index_manifest.json` — freshness inputs
 - `resources/ui_map/windows/hpx_rebranding/bell_icon.json`, `libs/flows/windows/hpx_rebranding/bell_icon.py`, `Framework/bell_notifications/test_suite_{01,02,04}*.py` — sample-defect fix targets
+
+
+----------------------
+
+Ran
+List all files currently in test2/
+Bash
+find test2 -type f | sort
+test2/BUGFIX_WORKFLOW.md
+test2/__pycache__/config.cpython-314.pyc
+test2/__pycache__/impact_analyzer.cpython-314.pyc
+test2/__pycache__/index_manager.cpython-314.pyc
+test2/__pycache__/report_generator.cpython-314.pyc
+test2/__pycache__/run_workflow.cpython-314.pyc
+test2/__pycache__/search_client.cpython-314.pyc
+test2/__pycache__/service_manager.cpython-314.pyc
+test2/config.py
+test2/defects/DEFECT-1042_bell_signin_rename.json
+test2/impact_analyzer.py
+test2/index_manager.py
+test2/report_generator.py
+test2/reports/.gitkeep
+test2/reports/DEFECT-1042_impact_report.md
+test2/reports/DEFECT-1042_raw.json
+test2/reports/indexer_service.log
+test2/run_workflow.py
+test2/search_client.py
+test2/service_manager.py
+Order of creation
+#	File	Purpose	Edits made afterward
+1	test2/config.py	Single source of truth: paths, JAR path, service identity (OWNER/REPO/BRANCH/SOURCE/DESTINATION), LAYER_RULES, timeouts	Added SPRING_PROFILE = "offline" after the DataSource startup error
+2	test2/defects/DEFECT-1042_bell_signin_rename.json	Simulated Jira defect (the workflow's input)	none
+3	test2/reports/.gitkeep	Placeholder so the empty reports/ dir is tracked	none
+4	test2/service_manager.py	JAR lifecycle: is_healthy(), ensure_service(), stop_service()	Added --spring.profiles.active=offline to the java -jar command
+5	test2/index_manager.py	Index freshness check, /api/index trigger + progress poll	Added service_has_index() probe (POST /api/search → check for 404) wired into needs_reindex()
+6	test2/search_client.py	/api/search, /api/analyse, feedback, accuracy — Chunk dataclass, build_queries, run_searches, analyse	none
+7	test2/impact_analyzer.py	Classifies hits by layer, ranks them, cross-layer expansion (locator key → page object → test)	Edit 1: scan all ui_map JSON files for locator keys instead of only search-hit files; Edit 2: restrict matching to title/description/steps (not stack_trace) + whole-word regex (?<!\w)key(?!\w) to kill false positives
+8	test2/report_generator.py	write_report() → writes the markdown impact report + raw JSON dump	none
+9	test2/run_workflow.py	CLI orchestrator tying everything together, --validate check	none
+10	test2/BUGFIX_WORKFLOW.md	The technical plan/handoff doc	Edit 1 (just now): noted --collect-only requires SAF on PYTHONPATH; Edit 2 (just now): added troubleshooting row for the ModuleNotFoundError: SAF
+Generated artifacts (not hand-written, produced by running the workflow)
+test2/reports/DEFECT-1042_impact_report.md — the impact report
+test2/reports/DEFECT-1042_raw.json — raw search/analyse payload dump
+test2/reports/indexer_service.log — JAR stdout/stderr (from when the service was first started)
+How to run it yourself, step by step
+All commands run from the repo root: /Users/sushreepradhan/Projects/HP/AAVA/MobileApps
+
+1. (Optional) Confirm/start the indexer service
+
+curl -s http://localhost:8080/actuator/health
+If that fails (connection refused), the workflow will start it itself — no manual step needed.
+
+2. Run the full workflow end-to-end
+
+.venv/bin/python test2/run_workflow.py test2/defects/DEFECT-1042_bell_signin_rename.json --validate
+Add --force-reindex to rebuild the index regardless of freshness check.
+Add --no-analyse to skip the /api/analyse call (it's not implemented in the offline profile and will just print a warning otherwise).
+Add --keep-service to leave the JAR running afterward (it's currently running already, so this has no effect either way).
+You'll see streamed output: index-freshness decision → each search query + chunk count → report path → top 5 impacted files → VALIDATION PASSED/FAILED line.
+
+3. View the generated impact report
+
+cat test2/reports/DEFECT-1042_impact_report.md
+or open test2/reports/DEFECT-1042_impact_report.md in an editor. It has sections: defect summary, index status, queries issued, then per-layer (Locators / Page objects / Test suites / Other) ranked findings with evidence and a proposed action for each file.
+
+4. Inspect the raw API payloads (optional, for debugging)
+
+.venv/bin/python -m json.tool test2/reports/DEFECT-1042_raw.json | less
+5. Run individual modules standalone (each has a smoke-test __main__ block)
+
+.venv/bin/python test2/service_manager.py     # health-check / start the JAR
+.venv/bin/python test2/index_manager.py       # freshness check + reindex if needed
+.venv/bin/python test2/search_client.py       # run sample searches against DEFECT-1042
+.venv/bin/python test2/impact_analyzer.py test2/defects/DEFECT-1042_bell_signin_rename.json
+6. Post-fix validation checks (run after editing locator/page-object/test files for a real defect)
+
+.venv/bin/python -m json.tool resources/ui_map/windows/hpx_rebranding/bell_icon.json
+.venv/bin/python -m py_compile test2/*.py
+.venv/bin/python -m pytest tests/windows/hpx_rebranding/Framework/bell_notifications/ --collect-only -q
+Note: the last command currently fails locally with ModuleNotFoundError: No module named 'SAF' — that's a pre-existing environment gap (the SAF framework isn't vendored in this repo), documented in BUGFIX_WORKFLOW.md section 11. Run it on CI/the test rig instead.
+
+7. Try a different/real defect
+Write a new JSON file under test2/defects/ following the shape of DEFECT-1042_bell_signin_rename.json (title, description, steps_to_reproduce, stack_trace, priority, component), then re-run step 2 pointing at the new file.
