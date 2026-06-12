@@ -9,4 +9,6 @@ results/*
 *.prefs
 config/system_config.json
 results
+code-indexer-2.0.0.jar
+tests/windows/hpx_rebranding/Framework/bell_notifications/index_outputs/
 

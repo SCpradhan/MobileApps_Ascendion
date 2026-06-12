@@ -1,0 +1,15 @@
+{
+  "key": "DEFECT-1042",
+  "title": "Bell notification panel: 'Sign in / Create account' button renamed to 'Sign in' - automation fails to find sign-in button",
+  "priority": "P2",
+  "component": "bell_notifications",
+  "platform": "windows",
+  "description": "After the HPX 25.6 UI update, the sign-in button inside the bell notifications side panel was renamed from 'Sign in / Create account' to 'Sign in'. Windows hpx_rebranding regression suites fail: wait_for_object('notifications_panel_sign_in_btn') times out because the xpath //Button[@Name='Sign in / Create account'] no longer matches the control. The AutomationId may also have changed from BellNotifications.BellNotificationsView.SignInButton.",
+  "steps_to_reproduce": [
+    "Launch MyHP on Windows 11 while signed out",
+    "Click the bell icon in the top navigation bar to open the Notifications side panel",
+    "Observe the sign-in button label now reads 'Sign in' instead of 'Sign in / Create account'"
+  ],
+  "stack_trace": "FAILED tests/windows/hpx_rebranding/Framework/bell_notifications/test_suite_01_bell_notifications.py::Test_Suite_01_Bell_Notifications::test_03 - AssertionError: sign-in button in notification panel invisible\n  File \"libs/flows/windows/hpx_rebranding/bell_icon.py\", line 19, in verify_notifications_panel_sign_in_btn\n    return self.driver.wait_for_object(\"notifications_panel_sign_in_btn\")\nTimeoutError: object 'notifications_panel_sign_in_btn' not found: //Button[@Name='Sign in / Create account']",
+  "environment": "Windows 11, HPX 25.6, hpx_rebranding regression rig"
+}

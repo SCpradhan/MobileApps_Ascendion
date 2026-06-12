@@ -1,0 +1,631 @@
+{
+  "info": {
+    "_postman_id": "53f75232-5ba0-41e0-90a4-283ddb58f0bb",
+    "name": "Code-Indexing Version4",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "55038480",
+    "_collection_link": "https://go.postman.co/collection/55038480-53f75232-5ba0-41e0-90a4-283ddb58f0bb?source=collection_link"
+  },
+  "item": [
+    {
+      "name": "Health Check",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:8080/actuator/health",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "actuator",
+            "health"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Trigger Index",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n      \"source\": \"local\",\n      \"destination\": \"lucene\",\n      \"repoPath\": \"/Users/saravananr/Downloads/MobileApps-main\",\n      \"userPrincipal\": \"saravanan\",\n      \"isPurposeRequired\": false,\n      \"isChunkSummaryRequired\": true,\n      \"summariseTestsOnly\": true\n  }  ",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:8080/api/index",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "api",
+            "index"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Trigger Index local",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "// {\n//   \"owner\":         \"NavneetBN47\",\n//   \"repo\":          \"MobileApps\",\n//   \"branch\":        \"main\",\n//   \"userPrincipal\": \"anushree.s\",\n//   \"source\":        \"local\",\n//   \"destination\":   \"local\",\n//   \"repoPath\":      \"C:/Users/anushree.s/OneDrive - ascendion/HP/HPX/Implementation/SR's architecture/INDEXER from ADO/MobileApps-main\"\n// }\n\n{\n  \"owner\":              \"hp\",\n  \"repo\":               \"mobileapps-jira\",\n  \"sourceType\":         \"jira\",\n  \"realmId\":            \"32\",\n  \"projectId\":          \"hpx-mobileapps\",\n  \"endpoint\":           \"https://your-jira.atlassian.net\",\n  \"credentials\":        \"anushree.s@ascendion.com:ATATT3xFfGF0P0BTlP0hTqol001RG0jNUbWSPtLo0NVQqF0WPKzDt-hzLj1iATap9veadni787unEIqkX4mLlp1F0sbSOK14gAfuqXwtkChFLupfEBvtk3E9Obh0NqKLPaDoc7GoiAfA68iVZZiecClLR_NSvY-EhENiwDpPmlCZisHmoJD8kVY=73390453\",\n  \"upstreamProjectKey\": \"HPX\",\n  \"userPrincipal\":      \"anushree\",\n  \"scope\":              { \"maxRefs\": 200 },\n  \"extractAttachments\": true         //originally false\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:8080/api/index",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "api",
+            "index"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Index Progress - polling",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:8080/api/index/progress?owner=local&repo=MobileApps-main&branch=main",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "api",
+            "index",
+            "progress"
+          ],
+          "query": [
+            {
+              "key": "owner",
+              "value": "local"
+            },
+            {
+              "key": "repo",
+              "value": "MobileApps-main"
+            },
+            {
+              "key": "branch",
+              "value": "main"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Index Progress - polling local",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:8080/api/index/progress?owner=NavneetBN47&repo=MobileApps&branch=main",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "api",
+            "index",
+            "progress"
+          ],
+          "query": [
+            {
+              "key": "owner",
+              "value": "NavneetBN47"
+            },
+            {
+              "key": "repo",
+              "value": "MobileApps"
+            },
+            {
+              "key": "branch",
+              "value": "main"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Chunk Index Status",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"source\": \"local\",\n    \"repoPath\": \"/Users/saravananr/git/code-indexer\",\n    \"owner\": \"local\",\n    \"repo\": \"code-indexer\",\n    \"branch\": \"local\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:8080/api/index/status",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "api",
+            "index",
+            "status"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Analyse Bug",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"title\": \"NoSuchFieldError: SslContext missing defaultEndpointVerificationAlgorithm on startup\",\n    \"description\": \"Application fails to start when making HTTP calls via Azure SDK. The error occurs in Netty QUIC/HTTP3 SSL context initialization. Likely a Netty version conflict between io.netty (core) and io.netty.incubator.codec.quic used by reactor-netty-http\",\n    \"stackTrace\": \"java.lang.NoSuchFieldError: Class io.netty.handler.ssl.SslContext does not have member field 'java.lang.String defaultEndpointVerificationAlgorithm'\\n\\tat  io.netty.handler.codec.quic.QuicheQuicSslContext.<clinit>(QuicheQuicSslContext.java: 73)\\n\\tat io.netty.handler.codec.quic.QuicSslContextBuilder.<init>(QuicSslContextBuilder.java: 183)\\n\\tat    io.netty.handler.codec.quic.QuicSslContextBuilder.forClient(QuicSslContextBuilder.java: 98)\\n\\tat reactor.netty.http.Http3SslContextSpec.forClient(Http3SslContextSpec.java: 57)\\n\\tat      reactor.netty.http.client.HttpClientSecure.<clinit>(HttpClientSecure.java: 82)\\n\\tat reactor.netty.http.client.HttpClientConnect$MonoHttpConnect.lambda$subscribe$0(HttpClientConnect.java: 227)\\n\\tat  reactor.core.publisher.MonoCreate.subscribe(MonoCreate.java: 61)\\n\\tat reactor.core.publisher.InternalMonoOperator.subscribe(InternalMonoOperator.java: 76)\\n\\tat reactor.core.publisher.FluxRetryWhen.subscribe(FluxRetryWhen.java: 81)\\n\\tat  reactor.core.publisher.MonoRetryWhen.subscribeOrReturn(MonoRetryWhen.java: 46)\\n\\tat reactor.core.publisher.InternalMonoOperator.subscribe(InternalMonoOperator.java: 63)\\n\\tat reactor.netty.http.client.HttpClientConnect$MonoHttpConnect.subscribe(HttpClientConnect.java: 301)\\n\\tat reactor.core.publisher.Mono.subscribe(Mono.java: 4576)\\n\\tat reactor.core.publisher.Mono.block(Mono.java: 1778)\\n\\tat com.azure.core.http.netty.NettyAsyncHttpClient.sendSync(NettyAsyncHttpClient.java: 174)\\n\\tat com.azure.core.http.HttpPipelineNextSyncPolicy.processSync(HttpPipelineNextSyncPolicy.java: 51)\\n\\tat com.azure.core.http.policy.HttpLoggingPolicy.processSync(HttpLoggingPolicy.java: 175)\\n\\tat com.azure.core.http.HttpPipelineNextSyncPolicy.processSync(HttpPipelineNextSyncPolicy.java: 53)\\n\\tat com.azure.core.implementation.http.policy.InstrumentationPolicy.processSync(InstrumentationPolicy.java: 101)\",\n    \"source\": \"local\",\n    \"repoPath\": \"/Users/saravananr/git/aava-core-api-embedding-service\",\n    \"destination\": \"lucene\",\n    \"priority\": \"high\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:8080/api/analyse",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "api",
+            "analyse"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Analyse Bug local",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"source\": \"local\",\n    \"destination\": \"local\",\n    \"repoPath\": \"/Users/saravananr/git/code-indexer\",\n    \"title\": \"NullPointerException in crew kickoff\",\n    \"description\": \"NullPointerException in crew kickoff\",\n    \"stackTrace\": \"NullPointerException in crew kickoff crew.kickoff()\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:8080/api/analyse",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "api",
+            "analyse"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Search",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": " {\n      \"source\": \"local\",\n      \"destination\": \"lucene\",\n      \"owner\": \"local\",\n      \"repo\": \"MobileApps-main\",\n      \"branch\": \"main\",\n      \"repoPath\": \"/Users/saravananr/Downloads/MobileApps-main\",\n      \"query\": \"where to add this test step : Verify user is redirected to 'Add shortcut' screen with saved details from 'Add print' screen? \"\n  }",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:8080/api/search",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "api",
+            "search"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Search Copy",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"source\": \"github\",\n    \"destination\": \"local\",\n    \"owner\": \"Saravanan1689\",\n    \"repo\": \"chroma\",\n    \"branch\": \"main\",\n    \"githubToken\": \"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\",\n    \"query\": \"package.json\"\n}\n",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:8080/api/search",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "api",
+            "search"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Submit Feedback on an Analysis",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"correct\": true,\n    \"actualFile\": \"src/main/java/com/example/PaymentService.java\",\n    \"notes\": \"Root cause was correct, fix worked\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:8080/api/analyse/{analysisId}/feedback",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "api",
+            "analyse",
+            "{analysisId}",
+            "feedback"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Get Analysis History",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:8080/api/analyse/history?owner=local&repo=your-repo&limit=10",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "api",
+            "analyse",
+            "history"
+          ],
+          "query": [
+            {
+              "key": "owner",
+              "value": "local"
+            },
+            {
+              "key": "repo",
+              "value": "your-repo"
+            },
+            {
+              "key": "limit",
+              "value": "10"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "git-ratelimit",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer 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"
+          }
+        ],
+        "url": {
+          "raw": "https://api.github.com/rate_limit",
+          "protocol": "https",
+          "host": [
+            "api",
+            "github",
+            "com"
+          ],
+          "path": [
+            "rate_limit"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Architecture",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "\n{\n      \"source\": \"local\",\n      \"destination\": \"lucene\",\n      \"owner\": \"local\",\n      \"repo\": \"MobileApps-main\",\n      \"branch\": \"main\",\n      \"repoPath\": \"/Users/saravananr/Downloads/MobileApps-main\",\n      \"diagramType\": \"mermaid\",\n       \"userPrincipal\": \"saravananr\",\n      \"focus\": \"overall\"\n  }"
+        },
+        "url": {
+          "raw": "http://localhost:8080/api/architecture",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "api",
+            "architecture"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Architecture Copy",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n      \"source\": \"local\",\n      \"destination\": \"lucene\",\n      \"owner\": \"local\",\n      \"repo\": \"MobileApps-main\",\n      \"branch\": \"main\",\n      \"repoPath\": \"/Users/saravananr/Downloads/MobileApps-main\",\n      \"diagramType\": \"mermaid\",\n      \"focus\": \"overall\"\n  }"
+        },
+        "url": {
+          "raw": "http://localhost:8080/api/architecture",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "api",
+            "architecture"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "mermaid",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:8080/api/architecture/diagram?owner=local&repo=MobileApps-main&branch=main&diagramType=mermaid&destination=lucene&repoPath=/Users/saravananr/Downloads/MobileApps-main",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "api",
+            "architecture",
+            "diagram"
+          ],
+          "query": [
+            {
+              "key": "owner",
+              "value": "local"
+            },
+            {
+              "key": "repo",
+              "value": "MobileApps-main"
+            },
+            {
+              "key": "branch",
+              "value": "main"
+            },
+            {
+              "key": "diagramType",
+              "value": "mermaid"
+            },
+            {
+              "key": "destination",
+              "value": "lucene"
+            },
+            {
+              "key": "repoPath",
+              "value": "/Users/saravananr/Downloads/MobileApps-main"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "mermaid Copy",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:8080/api/architecture/diagram?owner=local&repo=MobileApps-main&branch=main&destination=lucene&repoPath=/Users/saravananr/Downloads/MobileApps-main&diagramType=text",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "api",
+            "architecture",
+            "diagram"
+          ],
+          "query": [
+            {
+              "key": "owner",
+              "value": "local"
+            },
+            {
+              "key": "repo",
+              "value": "MobileApps-main"
+            },
+            {
+              "key": "branch",
+              "value": "main"
+            },
+            {
+              "key": "destination",
+              "value": "lucene"
+            },
+            {
+              "key": "repoPath",
+              "value": "/Users/saravananr/Downloads/MobileApps-main"
+            },
+            {
+              "key": "diagramType",
+              "value": "text"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "accuracy",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:8080/api/index/accuracy?owner=local&repo=MobileApps-main&branch=main&destination=lucene&repoPath=/Users/saravananr/Downloads/MobileApps-main",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "api",
+            "index",
+            "accuracy"
+          ],
+          "query": [
+            {
+              "key": "owner",
+              "value": "local"
+            },
+            {
+              "key": "repo",
+              "value": "MobileApps-main"
+            },
+            {
+              "key": "branch",
+              "value": "main"
+            },
+            {
+              "key": "destination",
+              "value": "lucene"
+            },
+            {
+              "key": "repoPath",
+              "value": "/Users/saravananr/Downloads/MobileApps-main"
+            }
+          ]
+        }
+      },
+      "response": []
+    }
+  ]
+}
